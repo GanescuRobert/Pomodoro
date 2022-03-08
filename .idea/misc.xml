@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/drawable/custom_rb.xml" value="0.169" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/drawable/edittext.xml" value="0.185" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/drawable/rb1.xml" value="0.1965" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/drawable/rb2.xml" value="0.1965" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/drawable/rb3.xml" value="0.1965" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/drawable/rb4.xml" value="0.1965" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/drawable/rb5.xml" value="0.1965" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/drawable/rb6.xml" value="0.1965" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/drawable/rb7.xml" value="0.1965" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/drawable/rb8.xml" value="0.1965" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/drawable/rb9.xml" value="0.1965" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/font/allerta.xml" value="0.203125" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/font/roboto.xml" value="0.203125" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/layout/activity_create_pomodoro.xml" value="0.33" />
+        <entry key="..\:/FACULTATE_Backup/Anul4/Semestrul2/Calcul Mobil/Pomodoro/app/src/main/res/layout/activity_main.xml" value="0.36186594202898553" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
