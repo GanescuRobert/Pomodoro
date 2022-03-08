@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">Pomodoro</string>
+    <!--    MainActivity button 'Statistics' -->
+    <string name="statistics_label">Statistics</string>
+    <!--    Overview -->
+    <string name="overview_label">Overview</string>
+    <!--    Distribution -->
+    <string name="distribution_label">Distribution</string>
+    <!--    History -->
+    <string name="history_label">History</string>
+    <!--    Labels from overview -->
+    <string name="today_label">Today</string>
+    <string name="last_week_label">Last week</string>
+    <string name="last_month_label">Last month</string>
+    <string name="last_year_label">Last year</string>
 </resources>
