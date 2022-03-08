@@ -11,7 +11,10 @@
         android:theme="@style/Theme.Pomodoro">
         <activity
             android:name=".CreatePomodoroActivity"
-            android:exported="false" />
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".StatisticsActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
