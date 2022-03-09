@@ -4,6 +4,6 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
-        android:font="@font/Allerta" />
+        android:font="@font/allerta_" />
 
 </font-family>
