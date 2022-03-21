@@ -2,6 +2,8 @@ package com.example.pomodoro;
 
 public class Pomodoro {
 
+
+    private String name;
     private Integer focus;
     private Integer short_break;
     private Integer long_break;
@@ -9,17 +11,28 @@ public class Pomodoro {
     private Integer sets_until_long_break;
 
     public Pomodoro() {
-       this.focus=50 * 60000;
-       this.short_break=10 * 60000;
-       this.long_break=30 * 60000;
-       this.sets=4;
-       this.sets_until_long_break=2;
+        this.name = "Default";
+        this.focus = 50 * 60000;
+        this.short_break = 10 * 60000;
+        this.long_break = 30 * 60000;
+        this.sets = 4;
+        this.sets_until_long_break = 2;
+    }
+
+    public Pomodoro(String name, Integer focus, Integer short_break, Integer long_break, Integer sets, Integer sets_until_long_break) {
+        this.name = name;
+        this.focus = focus;
+        this.short_break = short_break;
+        this.long_break = long_break;
+        this.sets = sets;
+        this.sets_until_long_break = sets_until_long_break;
     }
 
     @Override
     public String toString() {
         return "Pomodoro{" +
-                "focus=" + focus +
+                "name='" + name + '\'' +
+                ", focus=" + focus +
                 ", short_break=" + short_break +
                 ", long_break=" + long_break +
                 ", sets=" + sets +
@@ -27,12 +40,12 @@ public class Pomodoro {
                 '}';
     }
 
-    public Pomodoro(Integer focus, Integer short_break, Integer long_break, Integer sets, Integer sets_until_long_break) {
-        this.focus = focus * 60000;
-        this.short_break = short_break * 60000;
-        this.long_break = long_break * 60000 ;
-        this.sets = sets;
-        this.sets_until_long_break = sets_until_long_break;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Integer getFocus() {
