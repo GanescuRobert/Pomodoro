@@ -1,37 +1,57 @@
 package com.example.pomodoro;
 
 import android.content.Intent;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
-    private static final long START_TIME_IN_MILLIS = 600000;
+public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
+    private static final long START_TIME_IN_MILLIS = 4000;
+
+    private static final int MIN_DISTANCE = 150;
+    private float x1, x2;
+    private GestureDetector gestureDetector;
+
     private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
     private TextView mTextViewCountDown;
-    private Button mButtonStartPause;
+
+    private Button mButtonStart;
+    private Button mButtonPause;
     private Button mButtonReset;
+
     private CountDownTimer mCountDownTimer;
-    private boolean mTimerRunning;
+
+    private final Pomodoro selected_pomodoro = new Pomodoro();
+    private final ArrayList<Pomodoro> pomodoros = new ArrayList<>(Arrays.asList(selected_pomodoro));
+
+    private ToneGenerator toneGen;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toneGen = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
+
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
-        mButtonStartPause = findViewById(R.id.start_pause_button);
+        mButtonStart = findViewById(R.id.start_button);
+        mButtonPause = findViewById(R.id.pause_button);
         mButtonReset = findViewById(R.id.reset_button);
 
         updateCountDownText();
     }
-
 
     public void openStatisticsActivity(View view) {
         Intent intent = new Intent(this, StatisticsActivity.class);
@@ -43,40 +63,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startPauseButton(View view) {
-        if (mTimerRunning) {
-            pauseTimer();
-        } else {
-            startTimer();
-        }
-    }
-
-    public void resetButton(View view) {
-        resetTimer();
-
-    }
-
-    private void startTimer() {
-        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-            @Override
-            public void onTick(long l) {
-                mTimeLeftInMillis = l;
-                updateCountDownText();
-            }
-
-            @Override
-            public void onFinish() {
-                mTimerRunning = false;
-                mButtonStartPause.setText("Start");
-                mButtonStartPause.setVisibility(View.INVISIBLE);
-                mButtonReset.setVisibility(View.VISIBLE);
-            }
-        }.start();
-        mTimerRunning = true;
-        mButtonStartPause.setText("Pause");
-        mButtonReset.setVisibility(View.INVISIBLE);
-    }
-
     private void updateCountDownText() {
         int minutes = (int) mTimeLeftInMillis / 1000 / 60;
         int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
@@ -84,18 +70,109 @@ public class MainActivity extends AppCompatActivity {
         mTextViewCountDown.setText(timeLeftFormatted);
     }
 
-    private void pauseTimer() {
+    public void startTimer(View view) {
+        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
+            @Override
+            public void onTick(long l) {
+                mTimeLeftInMillis = l;
+                if (mTimeLeftInMillis < 1000) {
+                    toneGen.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+                } else if (mTimeLeftInMillis < 4000) {
+                    toneGen.startTone(ToneGenerator.TONE_SUP_ERROR, 200);
+                }
+                updateCountDownText();
+            }
+
+            @Override
+            public void onFinish() {
+                resetTimer(view);
+            }
+        }.start();
+
+        mButtonStart.setVisibility(View.GONE);
+        mButtonPause.setVisibility(View.VISIBLE);
+        mButtonReset.setVisibility(View.GONE);
+    }
+
+
+    public void pauseTimer(View view) {
         mCountDownTimer.cancel();
-        mTimerRunning = false;
-        mButtonStartPause.setText("Start");
+
+        mButtonStart.setVisibility(View.VISIBLE);
+        mButtonPause.setVisibility(View.GONE);
         mButtonReset.setVisibility(View.VISIBLE);
     }
 
-    private void resetTimer() {
-        mTimeLeftInMillis = START_TIME_IN_MILLIS;
-        updateCountDownText();
-        mButtonReset.setVisibility(View.INVISIBLE);
-        mButtonStartPause.setVisibility(View.VISIBLE);
+    public void resetTimer(View view) {
+        mButtonStart.setVisibility(View.VISIBLE);
+        mButtonPause.setVisibility(View.GONE);
+        mButtonReset.setVisibility(View.GONE);
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = event.getX();
+                float valueX = x2 - x1;
+
+                if (Math.abs(valueX) > MIN_DISTANCE) {
+                    // Swipe Right
+                    if (valueX > 0) {
+                        Intent intent = new Intent(this, StatisticsActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.swipe_left_start, R.anim.swipe_left_end);
+
+                    }
+                    //Swipe Left
+                    else {
+                        Intent intent = new Intent(this, CreatePomodoroActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.swipe_right_start, R.anim.swipe_right_end);
+
+                    }
+                }
+
+                break;
+        }
+
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
 
 }

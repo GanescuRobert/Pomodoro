@@ -2,6 +2,8 @@ package com.example.pomodoro;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,20 +25,26 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-public class StatisticsActivity extends AppCompatActivity {
+public class StatisticsActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
+    private static final int MIN_DISTANCE = 150;
+
+    private final ArrayList<Integer> colors = new ArrayList<>();
     private PieChart pieChart;
     private BarChart stackedChart;
-    private final ArrayList<Integer> colors = new ArrayList<>();
+
+    private float x1, x2;
+    private GestureDetector gestureDetector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
+        this.gestureDetector = new GestureDetector(StatisticsActivity.this, this);
+
         generateColors();
         pieChart = findViewById(R.id.distribution_chart);
         stackedChart = findViewById(R.id.history_chart);
-
 
         setupPieChart();
         loadPieChartData();
@@ -51,7 +59,6 @@ public class StatisticsActivity extends AppCompatActivity {
             colors.add(color);
         }
     }
-
 
     private void setupLegend(Legend legend) {
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
@@ -128,4 +135,74 @@ public class StatisticsActivity extends AppCompatActivity {
         BarData barData = new BarData(barDataSet);
         stackedChart.setData(barData);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.swipe_right_start,
+                R.anim.swipe_right_end);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                x1 = event.getX();
+                break;
+            case MotionEvent.ACTION_UP:
+                x2 = event.getX();
+
+                float valueX = x2 - x1;
+
+                if (Math.abs(valueX) > MIN_DISTANCE) {
+                    // Swipe Right
+                    if (valueX < 0) {
+                        onBackPressed();
+                    }
+                }
+                break;
+        }
+
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    public boolean onDown(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
+        return false;
+    }
+
+
 }
