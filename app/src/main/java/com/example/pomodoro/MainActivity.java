@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +39,12 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     private ToneGenerator toneGen;
 
+    private View mBottomSheetActivity;
+    private ViewPager viewPager;
+    private ArrayList<Pomodoro> modelArrayList;
+    private SwipeAdapter myAdapter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +58,42 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         mButtonReset = findViewById(R.id.reset_button);
 
         updateCountDownText();
+
+        //pick pomo
+        viewPager = findViewById(R.id.viewPager);
+        loadCards();
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                //String title = modelArrayList.get(position).getTitle();
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+    }
+    private void loadCards(){
+        modelArrayList = new ArrayList<>();
+
+        modelArrayList.add(new Pomodoro());
+        modelArrayList.add(new Pomodoro());
+        modelArrayList.add(new Pomodoro());
+
+        myAdapter = new SwipeAdapter(this, modelArrayList);
+
+        viewPager.setAdapter(myAdapter);
+
+        //viewPager.setPadding(100, 0, 100,0);
+
     }
 
     public void openStatisticsActivity(View view) {

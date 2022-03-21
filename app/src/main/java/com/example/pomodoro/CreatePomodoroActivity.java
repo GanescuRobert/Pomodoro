@@ -1,6 +1,14 @@
 package com.example.pomodoro;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
+
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 
@@ -15,6 +23,38 @@ public class CreatePomodoroActivity extends AppCompatActivity implements Gesture
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_pomodoro);
+
+        getProgress(R.id.seekBar3, R.id.textView15);
+        getProgress(R.id.seekBar5, R.id.textView16);
+        getProgress(R.id.seekBar7, R.id.textView17);
+        getProgress(R.id.seekBar4, R.id.textView19);
+
+    }
+
+    public void getProgress(int seekBar, int textV) {
+
+        SeekBar simpleSeekBar = (SeekBar) findViewById(seekBar);
+        TextView seekBarValue = (TextView) findViewById(textV);
+
+        simpleSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                seekBarValue.setText(String.valueOf(progress));
+            }
+
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
+    }
+
+    public void applyToPomodoro(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
         this.gestureDetector = new GestureDetector(CreatePomodoroActivity.this, this);
 
     }
