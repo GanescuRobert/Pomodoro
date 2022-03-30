@@ -40,7 +40,7 @@ public class StatisticsActivity extends AppCompatActivity implements GestureDete
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
-        this.gestureDetector = new GestureDetector(StatisticsActivity.this, this);
+        gestureDetector = new GestureDetector(StatisticsActivity.this, this);
 
         generateColors();
         pieChart = findViewById(R.id.distribution_chart);
@@ -139,8 +139,7 @@ public class StatisticsActivity extends AppCompatActivity implements GestureDete
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        overridePendingTransition(R.anim.swipe_right_start,
-                R.anim.swipe_right_end);
+        overridePendingTransition(R.anim.swipe_right_start, R.anim.swipe_right_end);
     }
 
     @Override

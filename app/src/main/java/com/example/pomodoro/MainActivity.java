@@ -19,25 +19,21 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
-    private static final long START_TIME_IN_MILLIS = 4000;
 
     private static final int MIN_DISTANCE = 150;
     private float x1, x2;
     private GestureDetector gestureDetector;
 
-    private long mTimeLeftInMillis = START_TIME_IN_MILLIS;
-    private TextView mTextViewCountDown;
-
     private Button mButtonStart;
-    private Button mButtonPause;
-    private Button mButtonReset;
-
-    private CountDownTimer mCountDownTimer;
+    private Button mButtonFinish;
 
     private final Pomodoro selected_pomodoro = new Pomodoro();
     private final ArrayList<Pomodoro> pomodoros = new ArrayList<>(Arrays.asList(selected_pomodoro));
+    private Session session;
+    private ArrayList<Session> sessions = new ArrayList<>();
 
     private ToneGenerator toneGen;
+    private TextView mTextViewCountDown;
 
     private View mBottomSheetActivity;
     private ViewPager viewPager;
@@ -50,14 +46,11 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toneGen = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
-
+        gestureDetector = new GestureDetector(MainActivity.this, this);
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
         mButtonStart = findViewById(R.id.start_button);
-        mButtonPause = findViewById(R.id.pause_button);
-        mButtonReset = findViewById(R.id.reset_button);
+        mButtonFinish = findViewById(R.id.finish_button);
 
-        updateCountDownText();
 
         //pick pomo
         viewPager = findViewById(R.id.viewPager);
@@ -99,57 +92,29 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     public void openStatisticsActivity(View view) {
         Intent intent = new Intent(this, StatisticsActivity.class);
         startActivity(intent);
+        overridePendingTransition(R.anim.swipe_left_start, R.anim.swipe_left_end);
     }
 
     public void openCreatePomodoroActivity(View view) {
         Intent intent = new Intent(this, CreatePomodoroActivity.class);
         startActivity(intent);
-    }
-
-    private void updateCountDownText() {
-        int minutes = (int) mTimeLeftInMillis / 1000 / 60;
-        int seconds = (int) (mTimeLeftInMillis / 1000) % 60;
-        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
-        mTextViewCountDown.setText(timeLeftFormatted);
+        overridePendingTransition(R.anim.swipe_right_start, R.anim.swipe_right_end);
     }
 
     public void startTimer(View view) {
-        mCountDownTimer = new CountDownTimer(mTimeLeftInMillis, 1000) {
-            @Override
-            public void onTick(long l) {
-                mTimeLeftInMillis = l;
-                if (mTimeLeftInMillis < 1000) {
-                    toneGen.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
-                } else if (mTimeLeftInMillis < 4000) {
-                    toneGen.startTone(ToneGenerator.TONE_SUP_ERROR, 200);
-                }
-                updateCountDownText();
-            }
-
-            @Override
-            public void onFinish() {
-                resetTimer(view);
-            }
-        }.start();
+        session = new Session(selected_pomodoro, mTextViewCountDown);
+        session.start();
 
         mButtonStart.setVisibility(View.GONE);
-        mButtonPause.setVisibility(View.VISIBLE);
-        mButtonReset.setVisibility(View.GONE);
+        mButtonFinish.setVisibility(View.VISIBLE);
     }
 
-
-    public void pauseTimer(View view) {
-        mCountDownTimer.cancel();
+    public void finishTimer(View view) {
+        session.finish();
+        sessions.add(session);
 
         mButtonStart.setVisibility(View.VISIBLE);
-        mButtonPause.setVisibility(View.GONE);
-        mButtonReset.setVisibility(View.VISIBLE);
-    }
-
-    public void resetTimer(View view) {
-        mButtonStart.setVisibility(View.VISIBLE);
-        mButtonPause.setVisibility(View.GONE);
-        mButtonReset.setVisibility(View.GONE);
+        mButtonFinish.setVisibility(View.GONE);
     }
 
     @Override
@@ -170,14 +135,12 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
                         Intent intent = new Intent(this, StatisticsActivity.class);
                         startActivity(intent);
                         overridePendingTransition(R.anim.swipe_left_start, R.anim.swipe_left_end);
-
                     }
                     //Swipe Left
                     else {
                         Intent intent = new Intent(this, CreatePomodoroActivity.class);
                         startActivity(intent);
                         overridePendingTransition(R.anim.swipe_right_start, R.anim.swipe_right_end);
-
                     }
                 }
 
@@ -216,6 +179,4 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
         return false;
     }
-
-
 }

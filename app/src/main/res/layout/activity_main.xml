@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:text="@string/text_view_countdown"
             android:textColor="@color/design_default_color_primary"
-            android:textSize="120sp" />
+            android:textSize="96sp" />
 
         <com.google.android.flexbox.FlexboxLayout
             android:layout_width="match_parent"
@@ -74,19 +74,11 @@
                 android:onClick="startTimer" />
 
             <Button
-                android:id="@+id/pause_button"
-                android:layout_width="128dp"
-                android:layout_height="128dp"
-                android:background="@drawable/ic_pause"
-                android:onClick="pauseTimer"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/reset_button"
+                android:id="@+id/finish_button"
                 android:layout_width="128dp"
                 android:layout_height="128dp"
                 android:background="@drawable/ic_stop"
-                android:onClick="resetTimer"
+                android:onClick="finishTimer"
                 android:visibility="gone"/>
 
         </com.google.android.flexbox.FlexboxLayout>
