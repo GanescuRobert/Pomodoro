@@ -20,7 +20,7 @@
     <string name="start_button">Start</string>
     <string name="reset_button">Reset</string>
     <!--    CreatePomodoroActivity -->
-    <string name="edit_label">Edit</string>
+    <string name="edit_label">Create</string>
     <string name="name_label">Name</string>
     <string name="edit_name_input">Edit Name</string>
     <string name="pomo_time_label">Pomo Time</string>
@@ -31,7 +31,13 @@
     <string name="longbreak_time_details_label">Time for a long rest between sets</string>
     <string name="sets_label">Set of Pomo</string>
     <string name="sets_details_label">Amount of pomos for a set</string>
+    <string name="sets_until_break_label">Number of sets</string>
+    <string name="sets_until_break_details_label">Amount of sets until long break</string>
     <string name="min_label">min</string>
+    <string name="number_label">No.</string>
+    <string name="min25_label">25</string>
+    <string name="min5_label">5</string>
+    <string name="no1_label">1</string>
     <string name="color_label">Color</string>
     <string name="apply_button">Apply</string>
 
