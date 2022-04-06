@@ -28,14 +28,13 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private Button mButtonFinish;
 
     private final Pomodoro selected_pomodoro = new Pomodoro();
-    private final ArrayList<Pomodoro> pomodoros = new ArrayList<>(Arrays.asList(selected_pomodoro));
+    public ArrayList<Pomodoro> pomodoros = new ArrayList<>(Arrays.asList(selected_pomodoro));
     private Session session;
     private ArrayList<Session> sessions = new ArrayList<>();
 
     private ToneGenerator toneGen;
     private TextView mTextViewCountDown;
 
-    private View mBottomSheetActivity;
     private ViewPager viewPager;
     private ArrayList<Pomodoro> modelArrayList;
     private SwipeAdapter myAdapter;
@@ -46,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        toneGen = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
+        this.gestureDetector = new GestureDetector(MainActivity.this, this);
         gestureDetector = new GestureDetector(MainActivity.this, this);
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
         mButtonStart = findViewById(R.id.start_button);
@@ -58,35 +59,27 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                //String title = modelArrayList.get(position).getTitle();
-
+                String title = pomodoros.get(position).getName();
             }
-
             @Override
             public void onPageSelected(int position) {
-
             }
-
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
 
     }
     private void loadCards(){
-        modelArrayList = new ArrayList<>();
 
-        modelArrayList.add(new Pomodoro());
-        modelArrayList.add(new Pomodoro());
-        modelArrayList.add(new Pomodoro());
+        if(getIntent().hasExtra("key")) {
 
-        myAdapter = new SwipeAdapter(this, modelArrayList);
+            Pomodoro pmd = (Pomodoro) getIntent().getSerializableExtra("key");
+            pomodoros.add(pmd);
+        }
 
+        myAdapter = new SwipeAdapter(this, pomodoros);
         viewPager.setAdapter(myAdapter);
-
-        //viewPager.setPadding(100, 0, 100,0);
-
     }
 
     public void openStatisticsActivity(View view) {

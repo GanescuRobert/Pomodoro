@@ -21,7 +21,12 @@ public class SwipeAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return modelArrayList.size();
+        try {
+            return modelArrayList.size();
+        }
+        catch (NullPointerException e){
+            return 0;
+        }
     }
 
     @Override
@@ -35,7 +40,7 @@ public class SwipeAdapter extends PagerAdapter {
         View view = LayoutInflater.from(context).inflate(R.layout.item_view_pager, container, false);
 
         TextView cardTitle= view.findViewById(R.id.cardTitle);
-        //View banner = view.findViewById(R.id.banner);
+        View banner = view.findViewById(R.id.banner);
 
         //get data
         Pomodoro model = modelArrayList.get(position);
@@ -45,9 +50,10 @@ public class SwipeAdapter extends PagerAdapter {
         Integer long_break = model.getLong_break();
         Integer sets = model.getSets();
         Integer sets_until_long_break = model.getSets_until_long_break();
-
+        Integer color = model.getColor();
         //set data
         cardTitle.setText(name);
+        banner.setBackgroundColor(color);
 
         // handle click
         view.setOnClickListener(new View.OnClickListener() {

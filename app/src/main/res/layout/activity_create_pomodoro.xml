@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".CreatePomodoroActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,7 +12,7 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="117dp"
+            android:layout_width="wrap_content"
             android:layout_height="44dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/allerta_"
@@ -58,15 +58,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.494"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="TouchTargetSizeCheck" />
 
         <SeekBar
             android:id="@+id/seekBar3"
             android:layout_width="331dp"
             android:layout_height="27dp"
             android:layout_marginTop="156dp"
-            android:max="60"
-            android:progress="25"
+            android:max="50"
+            android:min="20"
+            android:progress="@string/min25_label"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
@@ -109,7 +111,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="140dp"
             android:fontFamily="@font/allerta_"
-            android:text="25"
+            android:text="@string/min25_label"
             android:textColor="#ffcc00"
             android:textSize="15sp"
             android:typeface="monospace"
@@ -136,7 +138,8 @@
             android:layout_width="331dp"
             android:layout_height="27dp"
             android:layout_marginTop="236dp"
-            android:max="30"
+            android:max="15"
+            android:min="5"
             android:progress="5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -182,7 +185,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="216dp"
             android:fontFamily="@font/allerta_"
-            android:text="5"
+            android:text="@string/min5_label"
             android:textColor="#ffcc00"
             android:textSize="15sp"
             android:typeface="monospace"
@@ -210,6 +213,7 @@
             android:layout_height="26dp"
             android:layout_marginTop="320dp"
             android:max="60"
+            android:min="10"
             android:progress="25"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -221,7 +225,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
-
             android:fontFamily="@font/allerta_"
             android:text="@string/longbreak_time_label"
             android:textColor="#33cccc"
@@ -240,7 +243,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="300dp"
             android:fontFamily="@font/allerta_"
-            android:text="25"
+            android:text="@string/min25_label"
             android:textColor="#ffcc00"
             android:textSize="15sp"
             android:typeface="monospace"
@@ -283,7 +286,8 @@
             android:layout_width="331dp"
             android:layout_height="27dp"
             android:layout_marginTop="404dp"
-            android:max="50"
+            android:max="20"
+            android:min="1"
             android:progress="1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -312,7 +316,7 @@
             android:layout_marginStart="28dp"
 
             android:fontFamily="@font/allerta_"
-            android:text="@string/min_label"
+            android:text="@string/number_label"
             android:textColor="#ffcc00"
             android:textSize="15sp"
             android:typeface="monospace"
@@ -327,7 +331,7 @@
             android:layout_height="24dp"
             android:layout_marginTop="380dp"
             android:fontFamily="@font/allerta_"
-            android:text="1"
+            android:text="@string/no1_label"
             android:textColor="#ffcc00"
             android:textSize="15sp"
             android:typeface="monospace"
@@ -348,148 +352,134 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/seekBar4" />
 
+        <SeekBar
+            android:id="@+id/seekBar2"
+            android:layout_width="331dp"
+            android:layout_height="27dp"
+            android:layout_marginTop="484dp"
+            android:max="10"
+            android:min="1"
+            android:progress="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="30dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="460dp"
+            android:fontFamily="@font/allerta_"
+            android:text="@string/no1_label"
+            android:textColor="#ffcc00"
+            android:textSize="15sp"
+            android:typeface="monospace"
+            app:layout_constraintStart_toEndOf="@+id/seekBar2"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:fontFamily="@font/allerta_"
+            android:text="@string/sets_until_break_label"
+            android:textColor="#33cccc"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:layout_constraintBottom_toTopOf="@+id/seekBar2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:fontFamily="@font/allerta_"
+            android:text="@string/number_label"
+            android:textColor="#ffcc00"
+            android:textSize="15sp"
+            android:typeface="monospace"
+            app:layout_constraintBottom_toTopOf="@+id/seekBar2"
+            app:layout_constraintStart_toEndOf="@+id/textView1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:fontFamily="@font/allerta_"
+            android:text="@string/sets_until_break_details_label"
+            android:textColor="#8080ff"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
+
 
         <TextView
             android:id="@+id/textView14"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:layout_marginStart="60dp"
+            android:layout_marginTop="540dp"
             android:fontFamily="@font/allerta_"
             android:text="@string/color_label"
             android:textColor="#33cccc"
             android:textSize="20sp"
             android:textStyle="bold"
-
             android:typeface="monospace"
-            app:layout_constraintBottom_toTopOf="@+id/radioGroup"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
-        <RadioGroup
-            android:id="@+id/radioGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginStart="21dp"
-            android:layout_marginBottom="60dp"
-            android:orientation='horizontal'
-            app:layout_constraintBottom_toBottomOf="parent"
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="560dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            >
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <RadioButton
-                android:id="@+id/radioButton1"
-                android:layout_width="40dp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/rb1"
-                android:button="@null"
-                android:checked="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RadioButton
-                android:id="@+id/radioButton2"
-                android:layout_width="40dp"
+            <com.flask.colorpicker.ColorPickerView
+                android:id="@+id/color_picker_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/rb2"
-                android:button="@null"
-                android:checked="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:density="6"
+                app:lightnessSlider="true"
+                app:lightnessSliderView="@+id/v_lightness_slider"
+                app:wheelType="CIRCLE"
+                tools:layout_editor_absoluteX="81dp"
+                tools:layout_editor_absoluteY="393dp" />
 
-            <RadioButton
-                android:id="@+id/radioButton3"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/rb3"
-                android:button="@null"
-                android:checked="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <com.flask.colorpicker.slider.LightnessSlider
+                android:id="@+id/v_lightness_slider"
+                android:layout_width="match_parent"
+                android:layout_height="48dp" />
 
-            <RadioButton
-                android:id="@+id/radioButton4"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/rb4"
-                android:button="@null"
-                android:checked="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RadioButton
-                android:id="@+id/radioButton5"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/rb5"
-                android:button="@null"
-                android:checked="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RadioButton
-                android:id="@+id/radioButton6"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/rb6"
-                android:button="@null"
-                android:checked="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <RadioButton
-                android:id="@+id/radioButton7"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/rb7"
-                android:button="@null"
-                android:checked="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-            <RadioButton
-                android:id="@+id/radioButton9"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="0dp"
-                android:background="@drawable/rb9"
-                android:button="@null"
-                android:checked="true"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </RadioGroup>
+        </LinearLayout>
 
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="652dp"
             android:backgroundTint="#33cccc"
             android:onClick="applyToPomodoro"
             android:text="@string/apply_button"
             android:textColor="@color/white"
             android:textStyle="bold"
+            android:layout_marginTop="920dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -1,40 +1,91 @@
 package com.example.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import com.flask.colorpicker.ColorPickerView;
+import com.flask.colorpicker.OnColorSelectedListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 public class CreatePomodoroActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
     private static final int MIN_DISTANCE = 150;
 
+    private EditText name_edittext;
     private GestureDetector gestureDetector;
+    private ColorPickerView colorPickerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_pomodoro);
+        this.gestureDetector = new GestureDetector(CreatePomodoroActivity.this, this);
 
-        getProgress(R.id.seekBar3, R.id.textView15);
-        getProgress(R.id.seekBar5, R.id.textView16);
-        getProgress(R.id.seekBar7, R.id.textView17);
-        getProgress(R.id.seekBar4, R.id.textView19);
+        name_edittext = findViewById(R.id.editTextTextPersonName);
+        colorPickerView = findViewById(R.id.color_picker_view);
+
+        setUpSeekBars();
 
     }
+    private void setUpSeekBars(){
+        setUpProgress(R.id.seekBar3, R.id.textView15);
+        setUpProgress(R.id.seekBar5, R.id.textView16);
+        setUpProgress(R.id.seekBar7, R.id.textView17);
+        setUpProgress(R.id.seekBar4, R.id.textView19);
+        setUpProgress(R.id.seekBar2, R.id.textView24);
+    }
 
-    public void getProgress(int seekBar, int textV) {
+    private int getPomoTimeProgress(){
+        SeekBar seekBar = findViewById(R.id.seekBar3);
+        return seekBar.getProgress();
+    }
+    private int getShortBreakProgress(){
+        SeekBar seekBar = findViewById(R.id.seekBar5);
+        return seekBar.getProgress();
+    }
+    private int getLongBreakProgress(){
+        SeekBar seekBar = findViewById(R.id.seekBar7);
+        return seekBar.getProgress();
+    }
+    private int getSetPomosProgress(){
+        SeekBar seekBar = findViewById(R.id.seekBar4);
+        return seekBar.getProgress();
+    }
+    private int getNumberSetsBreakProgress(){
+        SeekBar seekBar = findViewById(R.id.seekBar2);
+        return seekBar.getProgress();
+    }
 
-        SeekBar simpleSeekBar = (SeekBar) findViewById(seekBar);
-        TextView seekBarValue = (TextView) findViewById(textV);
+    private Pomodoro getPomodoro(){
+        Pomodoro pmd = new Pomodoro();
+
+        int pomoTime = getPomoTimeProgress();
+        int shortBreak = getShortBreakProgress();
+        int longBreak = getLongBreakProgress();
+        int setPomos = getSetPomosProgress();
+        int numberSets = getNumberSetsBreakProgress();
+
+        pmd.setFocus(pomoTime);
+        pmd.setShort_break(shortBreak);
+        pmd.setLong_break(longBreak);
+        pmd.setSets(setPomos);
+        pmd.setSets_until_long_break(numberSets);
+
+        return pmd;
+    }
+    public void setUpProgress(int seekBar, int textV) {
+
+        SeekBar simpleSeekBar = findViewById(seekBar);
+        TextView seekBarValue = findViewById(textV);
 
         simpleSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -54,8 +105,19 @@ public class CreatePomodoroActivity extends AppCompatActivity implements Gesture
 
     public void applyToPomodoro(View view) {
         Intent intent = new Intent(this, MainActivity.class);
+        Pomodoro pmd = getPomodoro();
+
+        //get name in edit name field
+
+        String name = name_edittext.getText().toString();
+
+        int color = colorPickerView.getSelectedColor();
+
+        pmd.setName(name);
+        pmd.setColor(color);
+
+        intent.putExtra("key",pmd );
         startActivity(intent);
-        this.gestureDetector = new GestureDetector(CreatePomodoroActivity.this, this);
 
     }
 

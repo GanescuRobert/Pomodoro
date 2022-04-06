@@ -1,6 +1,8 @@
 package com.example.pomodoro;
 
-public class Pomodoro {
+import java.io.Serializable;
+
+public class Pomodoro implements Serializable {
 
 
     private String name;
@@ -9,23 +11,27 @@ public class Pomodoro {
     private Integer long_break;
     private Integer sets;
     private Integer sets_until_long_break;
+    private Integer color;
 
     public Pomodoro() {
-        this.name = "Default";
+        this.name = "Studying";
         this.focus = 50 * 60000;
         this.short_break = 10 * 60000;
         this.long_break = 30 * 60000;
         this.sets = 4;
         this.sets_until_long_break = 2;
+        this.sets_until_long_break = 2;
+        this.color = 12345;
     }
 
-    public Pomodoro(String name, Integer focus, Integer short_break, Integer long_break, Integer sets, Integer sets_until_long_break) {
+    public Pomodoro(String name, Integer focus, Integer short_break, Integer long_break, Integer sets, Integer sets_until_long_break, Integer color) {
         this.name = name;
         this.focus = focus;
         this.short_break = short_break;
         this.long_break = long_break;
         this.sets = sets;
         this.sets_until_long_break = sets_until_long_break;
+        this.color = color;
     }
 
     @Override
@@ -37,6 +43,7 @@ public class Pomodoro {
                 ", long_break=" + long_break +
                 ", sets=" + sets +
                 ", sets_until_long_break=" + sets_until_long_break +
+                ", color=" + color +
                 '}';
     }
 
@@ -88,5 +95,11 @@ public class Pomodoro {
         this.sets_until_long_break = sets_until_long_break;
     }
 
+    public Integer getColor() {
+        return color;
+    }
 
+    public void setColor(Integer color) {
+        this.color = color;
+    }
 }

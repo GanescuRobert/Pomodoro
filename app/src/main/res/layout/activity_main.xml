@@ -35,7 +35,6 @@
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:background="@drawable/ic_add"
-
             android:onClick="openCreatePomodoroActivity"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
