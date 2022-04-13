@@ -15,12 +15,11 @@ public class Pomodoro implements Serializable {
 
     public Pomodoro() {
         this.name = "Studying";
-        this.focus = 50 * 60000;
-        this.short_break = 10 * 60000;
-        this.long_break = 30 * 60000;
-        this.sets = 4;
-        this.sets_until_long_break = 2;
-        this.sets_until_long_break = 2;
+        this.focus =  5000; //* 60000;
+        this.short_break = 0 * 60000;
+        this.long_break = 0 * 60000;
+        this.sets = 1;
+        this.sets_until_long_break = 1;
         this.color = 12345;
     }
 

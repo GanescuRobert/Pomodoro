@@ -1,37 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="600px"
         android:layout_margin="10dp"
         app:cardCornerRadius="10dp"
-        app:cardElevation="40dp"
+        app:cardElevation="40dp">
 
-        >
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
-            <TextView
-                android:id="@+id/banner"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"/>
 
             <TextView
-                android:id="@+id/cardTitle"
+                android:id="@+id/color_value"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="Title"
+                android:layout_weight="1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33"
+                    app:flexDirection="column">
+
+                    <TextView
+                        android:id="@+id/focus_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/focus" />
+
+                    <TextView
+                        android:id="@+id/focus_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Value 1"
+                        app:layout_flexGrow="1" />
+
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33"
+                    app:flexDirection="column">
+
+                    <TextView
+                        android:id="@+id/break_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/short_break">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/short_break_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Value 2"
+                        app:layout_flexGrow="1" />
+
+                    <TextView
+                        android:id="@+id/long_break_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/long_break">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/long_break_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Value 3"
+                        app:layout_flexGrow="1" />
+                </com.google.android.flexbox.FlexboxLayout>
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".33"
+                    app:flexDirection="column">
+
+                    <TextView
+                        android:id="@+id/sets_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/sets">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/sets_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Value 4"
+                        app:layout_flexGrow="1" />
+
+                    <TextView
+                        android:id="@+id/sets_until_break_label"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/sets_until_break">
+
+                    </TextView>
+
+                    <TextView
+                        android:id="@+id/sets_until_break_value"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Value 5"
+                        app:layout_flexGrow="1" />
+                </com.google.android.flexbox.FlexboxLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/title_value"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/pomdoro_title"
                 android:textColor="#000"
                 android:textSize="18sp" />
+
+
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

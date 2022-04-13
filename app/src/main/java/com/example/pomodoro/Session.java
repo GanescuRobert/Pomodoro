@@ -2,57 +2,69 @@ package com.example.pomodoro;
 
 import android.media.AudioManager;
 import android.media.ToneGenerator;
-import android.os.Build;
 import android.os.CountDownTimer;
+import android.util.Log;
+import android.widget.Button;
 import android.widget.TextView;
-
-import androidx.annotation.RequiresApi;
 
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class Session {
 
-    private Pomodoro pomodoro;
-    private TextView mTextViewCountDown;
+    private final Pomodoro pomodoro;
+    private final TextView mTextViewCountDown;
+    private final Button mButtonFinish;
 
-    public Session(Pomodoro pomodoro, TextView textView) {
-        this.pomodoro = pomodoro;
-        this.mTextViewCountDown = textView;
-        totalTime = get_total_time();
-    }
-
-
+    private final ToneGenerator toneGen = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
+    private final Integer totalTime;
     private CountDownTimer mCountDownTimer;
-    private ToneGenerator toneGen = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
+    private Integer currentTime;
+    private boolean isRunning = false;
 
     private LocalTime created_at;
     private LocalTime stoped_at;
     private long elapsedMinutes;
-    private Integer totalTime;
+
+    public Session(Pomodoro pomodoro, TextView textView, Button button) {
+        this.pomodoro = pomodoro;
+        this.mTextViewCountDown = textView;
+        this.mButtonFinish = button;
+        totalTime = get_total_time();
+        currentTime = totalTime;
+    }
 
     private void updateCountDownText(long timeLeftInMillis) {
-        int seconds = (int) (timeLeftInMillis / 1000) % 60 ;
-        int minutes = (int) ((timeLeftInMillis / (1000*60)) % 60);
-        int hours   = (int) ((timeLeftInMillis / (1000*60*60)) % 24);
+        int seconds = (int) (timeLeftInMillis / 1000) % 60;
+        int minutes = (int) ((timeLeftInMillis / (1000 * 60)) % 60);
+        int hours = (int) ((timeLeftInMillis / (1000 * 60 * 60)) % 24);
 
-        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d",hours, minutes, seconds);
+        String timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d:%02d", hours, minutes, seconds);
         mTextViewCountDown.setText(timeLeftFormatted);
     }
-    private void cleanCountDownText() {
-        mTextViewCountDown.setText("");
+
+    public void resetCountDownText() {
+        updateCountDownText(totalTime);
     }
 
     public void start() {
+        if (isRunning == false) {
+            isRunning = true;
+            created_at = LocalTime.now();
+        }
 
-        this.created_at = LocalTime.now();
-
-        mCountDownTimer = new CountDownTimer(totalTime, 1000) {
+        mCountDownTimer = new CountDownTimer(currentTime , 1000) {
             @Override
-            public void onTick(long l) {
-                updateCountDownText(l);
+            public void onTick(long milliTillFinish) {
+                currentTime = (int)milliTillFinish;
+                if (milliTillFinish < 1000) {
+                    toneGen.startTone(ToneGenerator.TONE_CDMA_ALERT_CALL_GUARD, 200);
+                } else if (milliTillFinish < 4000) {
+                    toneGen.startTone(ToneGenerator.TONE_SUP_ERROR, 200);
+                }
+                Log.v("SESSION:", String.valueOf(currentTime));
+                updateCountDownText(milliTillFinish);
             }
 
             @Override
@@ -62,15 +74,20 @@ public class Session {
         }.start();
     }
 
-    public void finish() {
-        cleanCountDownText();
-        this.stoped_at = LocalTime.now();
-        elapsedMinutes = Duration.between(created_at,stoped_at).toSeconds();
+    public void pause() {
         mCountDownTimer.cancel();
     }
 
+    public void finish() {
+        mButtonFinish.performClick();
+        stoped_at = LocalTime.now();
+        isRunning = false;
+        mCountDownTimer.cancel();
+
+        elapsedMinutes = Duration.between(created_at, stoped_at).toMinutes();
+    }
+
     public Integer get_total_time() {
-        Integer ans = (pomodoro.getFocus() + pomodoro.getShort_break()) * pomodoro.getSets() + pomodoro.getLong_break() * (pomodoro.getSets() / pomodoro.getSets_until_long_break() - 1);
-        return ans;
+        return (pomodoro.getFocus() + pomodoro.getShort_break()) * pomodoro.getSets() + pomodoro.getLong_break() * (pomodoro.getSets() / pomodoro.getSets_until_long_break() - 1);
     }
 }

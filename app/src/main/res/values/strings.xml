@@ -18,6 +18,7 @@
     <!--    MainActivity -->
     <string name="text_view_countdown"></string>
     <string name="start_button">Start</string>
+    <string name="pause_button">Pause</string>
     <string name="reset_button">Reset</string>
     <!--    CreatePomodoroActivity -->
     <string name="edit_label">Create</string>
@@ -40,6 +41,12 @@
     <string name="no1_label">1</string>
     <string name="color_label">Color</string>
     <string name="apply_button">Apply</string>
+    <string name="pomdoro_title">Pomdoro title</string>
+    <string name="focus">Focus</string>
+    <string name="short_break">Break</string>
+    <string name="sets">Sets</string>
+    <string name="long_break">Long break</string>
+    <string name="sets_until_break">Sets until break</string>
 
 
 </resources>

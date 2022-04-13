@@ -71,7 +71,13 @@
                 android:layout_height="128dp"
                 android:background="@drawable/ic_play"
                 android:onClick="startTimer" />
-
+            <Button
+                android:id="@+id/pause_button"
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:background="@drawable/ic_pause"
+                android:onClick="pauseTimer"
+                android:visibility="gone"/>
             <Button
                 android:id="@+id/finish_button"
                 android:layout_width="128dp"

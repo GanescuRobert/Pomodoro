@@ -6,13 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
 import java.util.ArrayList;
 
 public class SwipeAdapter extends PagerAdapter {
-    private Context context;
-    private ArrayList<Pomodoro> modelArrayList;
+    private final Context context;
+    private final ArrayList<Pomodoro> modelArrayList;
 
     public SwipeAdapter(Context context, ArrayList<Pomodoro> modelArrayList) {
         this.context = context;
@@ -23,8 +25,7 @@ public class SwipeAdapter extends PagerAdapter {
     public int getCount() {
         try {
             return modelArrayList.size();
-        }
-        catch (NullPointerException e){
+        } catch (NullPointerException e) {
             return 0;
         }
     }
@@ -39,21 +40,25 @@ public class SwipeAdapter extends PagerAdapter {
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_view_pager, container, false);
 
-        TextView cardTitle= view.findViewById(R.id.cardTitle);
-        View banner = view.findViewById(R.id.banner);
+        TextView mTextViewTitle = view.findViewById(R.id.title_value);
+        TextView mTextViewFocus = view.findViewById(R.id.focus_value);
+        TextView mTextViewShortBreak = view.findViewById(R.id.short_break_value);
+        TextView mTextViewLongBreak = view.findViewById(R.id.long_break_value);
+        TextView mTextViewSets = view.findViewById(R.id.sets_value);
+        TextView mTextViewSetsUntilBreak = view.findViewById(R.id.sets_until_break_value);
+        TextView mTextViewColor = view.findViewById(R.id.color_value);
 
         //get data
-        Pomodoro model = modelArrayList.get(position);
-        String name = model.getName();
-        Integer focus = model.getFocus();
-        Integer short_break = model.getShort_break();
-        Integer long_break = model.getLong_break();
-        Integer sets = model.getSets();
-        Integer sets_until_long_break = model.getSets_until_long_break();
-        Integer color = model.getColor();
+        Pomodoro pomodoro = modelArrayList.get(position);
+
         //set data
-        cardTitle.setText(name);
-        banner.setBackgroundColor(color);
+        mTextViewTitle.setText(pomodoro.getName());
+        mTextViewFocus.setText(String.valueOf(pomodoro.getFocus()));
+        mTextViewShortBreak.setText(String.valueOf(pomodoro.getShort_break()));
+        mTextViewLongBreak.setText(String.valueOf(pomodoro.getLong_break()));
+        mTextViewSets.setText(String.valueOf(pomodoro.getSets()));
+        mTextViewSetsUntilBreak.setText(String.valueOf(pomodoro.getSets_until_long_break()));
+        mTextViewColor.setBackgroundColor(pomodoro.getColor());
 
         // handle click
         view.setOnClickListener(new View.OnClickListener() {

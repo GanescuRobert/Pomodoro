@@ -19,24 +19,23 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
-
-    private static final int MIN_DISTANCE = 150;
-    private float x1, x2;
     private GestureDetector gestureDetector;
+    private static final int MIN_DISTANCE = 150;
 
     private Button mButtonStart;
+    private Button mButtonPause;
     private Button mButtonFinish;
+    private TextView mTextViewCountDown;
+
+    private boolean isRunning = false;
 
     private final Pomodoro selected_pomodoro = new Pomodoro();
-    public ArrayList<Pomodoro> pomodoros = new ArrayList<>(Arrays.asList(selected_pomodoro));
+    private ArrayList<Pomodoro> pomodoros = new ArrayList<>(Arrays.asList(selected_pomodoro));
+
     private Session session;
     private ArrayList<Session> sessions = new ArrayList<>();
 
-    private ToneGenerator toneGen;
-    private TextView mTextViewCountDown;
-
     private ViewPager viewPager;
-    private ArrayList<Pomodoro> modelArrayList;
     private SwipeAdapter myAdapter;
 
 
@@ -45,13 +44,12 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toneGen = new ToneGenerator(AudioManager.STREAM_ALARM, 50);
         this.gestureDetector = new GestureDetector(MainActivity.this, this);
-        gestureDetector = new GestureDetector(MainActivity.this, this);
+
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
         mButtonStart = findViewById(R.id.start_button);
+        mButtonPause = findViewById(R.id.pause_button);
         mButtonFinish = findViewById(R.id.finish_button);
-
 
         //pick pomo
         viewPager = findViewById(R.id.viewPager);
@@ -73,7 +71,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private void loadCards(){
 
         if(getIntent().hasExtra("key")) {
-
             Pomodoro pmd = (Pomodoro) getIntent().getSerializableExtra("key");
             pomodoros.add(pmd);
         }
@@ -95,23 +92,38 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     }
 
     public void startTimer(View view) {
-        session = new Session(selected_pomodoro, mTextViewCountDown);
+        if (isRunning == false) {
+            isRunning = true;
+            session = new Session(selected_pomodoro, mTextViewCountDown, mButtonFinish);
+        }
         session.start();
 
+
         mButtonStart.setVisibility(View.GONE);
+        mButtonPause.setVisibility(View.VISIBLE);
+        mButtonFinish.setVisibility(View.GONE);
+    }
+    public void pauseTimer(View view) {
+        session.pause();
+
+        mButtonStart.setVisibility(View.VISIBLE);
+        mButtonPause.setVisibility(View.GONE);
         mButtonFinish.setVisibility(View.VISIBLE);
     }
-
     public void finishTimer(View view) {
-        session.finish();
+        isRunning = false;
+        session.resetCountDownText();
         sessions.add(session);
 
         mButtonStart.setVisibility(View.VISIBLE);
+        mButtonPause.setVisibility(View.GONE);
         mButtonFinish.setVisibility(View.GONE);
     }
 
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        float x1=0, x2=0;
         gestureDetector.onTouchEvent(event);
 
         switch (event.getAction()) {
@@ -172,4 +184,6 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
         return false;
     }
+
+
 }

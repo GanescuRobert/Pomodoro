@@ -66,21 +66,15 @@ public class CreatePomodoroActivity extends AppCompatActivity implements Gesture
     }
 
     private Pomodoro getPomodoro(){
-        Pomodoro pmd = new Pomodoro();
-
+        String name = name_edittext.getText().toString();
+        int color = colorPickerView.getSelectedColor();
         int pomoTime = getPomoTimeProgress();
         int shortBreak = getShortBreakProgress();
         int longBreak = getLongBreakProgress();
         int setPomos = getSetPomosProgress();
         int numberSets = getNumberSetsBreakProgress();
 
-        pmd.setFocus(pomoTime);
-        pmd.setShort_break(shortBreak);
-        pmd.setLong_break(longBreak);
-        pmd.setSets(setPomos);
-        pmd.setSets_until_long_break(numberSets);
-
-        return pmd;
+        return new Pomodoro(name,pomoTime,shortBreak,longBreak,setPomos,numberSets,color);
     }
     public void setUpProgress(int seekBar, int textV) {
 
@@ -106,17 +100,7 @@ public class CreatePomodoroActivity extends AppCompatActivity implements Gesture
     public void applyToPomodoro(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         Pomodoro pmd = getPomodoro();
-
-        //get name in edit name field
-
-        String name = name_edittext.getText().toString();
-
-        int color = colorPickerView.getSelectedColor();
-
-        pmd.setName(name);
-        pmd.setColor(color);
-
-        intent.putExtra("key",pmd );
+        intent.putExtra("key",pmd);
         startActivity(intent);
 
     }
