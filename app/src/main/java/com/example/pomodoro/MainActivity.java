@@ -1,10 +1,14 @@
 package com.example.pomodoro;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.ToneGenerator;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,39 +16,52 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
-    private GestureDetector gestureDetector;
     private static final int MIN_DISTANCE = 150;
-
+    private final Pomodoro selected_pomodoro = new Pomodoro();
+    private final ArrayList<Pomodoro> pomodoros = new ArrayList<>(Arrays.asList(selected_pomodoro));
+    private final ArrayList<Session> sessions = new ArrayList<>();
+    private GestureDetector gestureDetector;
     private Button mButtonStart;
     private Button mButtonPause;
+    private final SensorEventListener sensorEventListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent sensorEvent) {
+            if (sensorEvent.values[0] + sensorEvent.values[1] + sensorEvent.values[2] != 0.0f) {
+                mButtonPause.performClick();
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int i) {
+
+        }
+    };
     private Button mButtonFinish;
     private TextView mTextViewCountDown;
-
     private boolean isRunning = false;
-
-    private final Pomodoro selected_pomodoro = new Pomodoro();
-    private ArrayList<Pomodoro> pomodoros = new ArrayList<>(Arrays.asList(selected_pomodoro));
-
     private Session session;
-    private ArrayList<Session> sessions = new ArrayList<>();
-
     private ViewPager viewPager;
     private SwipeAdapter myAdapter;
-
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.gestureDetector = new GestureDetector(MainActivity.this, this);
+        gestureDetector = new GestureDetector(MainActivity.this, this);
+
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
 
         mTextViewCountDown = findViewById(R.id.text_view_countdown);
         mButtonStart = findViewById(R.id.start_button);
@@ -59,18 +76,51 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 String title = pomodoros.get(position).getName();
             }
+
             @Override
             public void onPageSelected(int position) {
             }
+
             @Override
             public void onPageScrollStateChanged(int state) {
             }
         });
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("My Notification", "My Notification", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
     }
-    private void loadCards(){
 
-        if(getIntent().hasExtra("key")) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mButtonStart.performClick();
+        mSensorManager.registerListener(sensorEventListener, mAccelerometer, SensorManager.SENSOR_DELAY_FASTEST);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mButtonPause.performClick();
+        mSensorManager.unregisterListener(sensorEventListener);
+    }
+
+    private void sendNotification(String title, String message) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, "My Notification");
+        builder.setContentTitle(title);
+        builder.setContentText(message);
+        builder.setSmallIcon(R.drawable.ic_launcher_background);
+        builder.setAutoCancel(true);
+
+        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MainActivity.this);
+        managerCompat.notify(1, builder.build());
+    }
+
+    private void loadCards() {
+
+        if (getIntent().hasExtra("key")) {
             Pomodoro pmd = (Pomodoro) getIntent().getSerializableExtra("key");
             pomodoros.add(pmd);
         }
@@ -103,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         mButtonPause.setVisibility(View.VISIBLE);
         mButtonFinish.setVisibility(View.GONE);
     }
+
     public void pauseTimer(View view) {
         session.pause();
 
@@ -110,11 +161,12 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         mButtonPause.setVisibility(View.GONE);
         mButtonFinish.setVisibility(View.VISIBLE);
     }
+
     public void finishTimer(View view) {
         isRunning = false;
         session.resetCountDownText();
         sessions.add(session);
-
+        sendNotification("Finish pomodoro session", "Your " + selected_pomodoro.getName() + " finish!");
         mButtonStart.setVisibility(View.VISIBLE);
         mButtonPause.setVisibility(View.GONE);
         mButtonFinish.setVisibility(View.GONE);
@@ -123,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        float x1=0, x2=0;
+        float x1 = 0, x2 = 0;
         gestureDetector.onTouchEvent(event);
 
         switch (event.getAction()) {
