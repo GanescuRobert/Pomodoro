@@ -22,7 +22,7 @@ public class CreatePomodoroActivity extends AppCompatActivity implements Gesture
     private EditText name_edittext;
     private GestureDetector gestureDetector;
     private ColorPickerView colorPickerView;
-
+    Pomodoro pmd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +99,8 @@ public class CreatePomodoroActivity extends AppCompatActivity implements Gesture
 
     public void applyToPomodoro(View view) {
         Intent intent = new Intent(this, MainActivity.class);
-        Pomodoro pmd = getPomodoro();
+        pmd = getPomodoro();
+        System.out.println(pmd);
         intent.putExtra("key",pmd);
         startActivity(intent);
 

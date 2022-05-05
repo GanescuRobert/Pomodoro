@@ -9,9 +9,13 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.GestureDetector;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -25,8 +29,8 @@ import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements GestureDetector.OnGestureListener {
     private static final int MIN_DISTANCE = 150;
-    private final Pomodoro selected_pomodoro = new Pomodoro();
-    private final ArrayList<Pomodoro> pomodoros = new ArrayList<>(Arrays.asList(selected_pomodoro));
+    //private final Pomodoro selected_pomodoro = new Pomodoro();
+    //private final ArrayList<Pomodoro> pomodoros = new ArrayList<>(Arrays.asList(selected_pomodoro));
     private final ArrayList<Session> sessions = new ArrayList<>();
     private GestureDetector gestureDetector;
     private Button mButtonStart;
@@ -47,6 +51,10 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
     private Button mButtonFinish;
     private TextView mTextViewCountDown;
     private boolean isRunning = false;
+
+    private static final Pomodoro selected_pomodoro = new Pomodoro();
+    private static ArrayList<Pomodoro> pomodoros = new ArrayList<>(Arrays.asList(selected_pomodoro));
+
     private Session session;
     private ViewPager viewPager;
     private SwipeAdapter myAdapter;
@@ -75,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 String title = pomodoros.get(position).getName();
+                TextView view = findViewById(R.id.color_value);
+                registerForContextMenu(view);
             }
 
             @Override
@@ -123,6 +133,8 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         if (getIntent().hasExtra("key")) {
             Pomodoro pmd = (Pomodoro) getIntent().getSerializableExtra("key");
             pomodoros.add(pmd);
+            System.out.println(pmd);
+            System.out.println(pomodoros);
         }
 
         myAdapter = new SwipeAdapter(this, pomodoros);
@@ -237,5 +249,58 @@ public class MainActivity extends AppCompatActivity implements GestureDetector.O
         return false;
     }
 
+
+    /*
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_pomos, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        // This comment suppresses the Android Studio warning about simplifying
+        // the return statements.
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_edit) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void registerForContextMenu(View view) {
+        //view =  view.findViewById(R.id.color_value);
+        super.registerForContextMenu(view);
+    }
+*/
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_pomos, menu);
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                //editNote(info.id);
+                return true;
+            case R.id.action_delete:
+                //deleteNote(info.id);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
 
 }

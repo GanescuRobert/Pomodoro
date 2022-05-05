@@ -47,6 +47,8 @@
     <string name="sets">Sets</string>
     <string name="long_break">Long break</string>
     <string name="sets_until_break">Sets until break</string>
+    <string name="action_edit">Edit</string>
+    <string name="action_delete">Delete</string>
 
 
 </resources>

@@ -24,6 +24,7 @@ public class SwipeAdapter extends PagerAdapter {
     @Override
     public int getCount() {
         try {
+            System.out.println("size" + modelArrayList.size());
             return modelArrayList.size();
         } catch (NullPointerException e) {
             return 0;
@@ -50,7 +51,7 @@ public class SwipeAdapter extends PagerAdapter {
 
         //get data
         Pomodoro pomodoro = modelArrayList.get(position);
-
+        System.out.println(position);
         //set data
         mTextViewTitle.setText(pomodoro.getName());
         mTextViewFocus.setText(String.valueOf(pomodoro.getFocus()));
@@ -67,8 +68,11 @@ public class SwipeAdapter extends PagerAdapter {
                 // To do
             }
         });
-        // add to container
-        container.addView(view, position);
+
+        if(position >= container.getChildCount())
+            container.addView(view);
+        else
+            container.addView(view, position);
 
         return view;
     }
